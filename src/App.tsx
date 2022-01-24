@@ -4,6 +4,14 @@ import { MuscleType } from "./types/MuscleType";
 import { ExerciseImageType } from "./types/ExerciseImageType";
 import { ExerciseType } from "./types/ExerciseType";
 import { getMuscleName } from "./utils/getMuscleName";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { Container } from "react-bootstrap";
+import { getExerciseImage } from "./utils/getExerciseImage";
+import { NavigationBar } from "./components/NavigationBar";
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import { StatsPage } from "./components/StatsPage";
+import { HomePage } from "./components/HomePage";
+import { LogWorkout } from "./components/LogWorkout";
 
 function App(): JSX.Element {
   const [exerciseList, setExerciseList] = useState<ExerciseType[]>([]);
@@ -59,19 +67,27 @@ function App(): JSX.Element {
   }, [getExercises, getImages, getMuscles]);
 
   return (
-    <div className="app">
-      <h1>{"Workout Tracker"}</h1>
-      {exerciseList.map((exercise, index) => {
-        const exerciseImage = imageList.find(
-          (image) => image.exercise_base === exercise.exercise_base
-        );
+    <>
+      <NavigationBar />
+      {/* Switch chooses just one page to access */}
+      <Router>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/new" element={<LogWorkout />} />
+          <Route path="/stats" element={<StatsPage />} />
+        </Routes>
+      </Router>
+    </>
+
+    /* {exerciseList.map((exercise, index) => {
+        const exerciseImage = getExerciseImage(imageList, exercise);
         return (
           <div key={`div-${index}`}>
             {exerciseImage !== undefined && (
               <img
-                src={exerciseImage?.image}
+                src={exerciseImage}
                 alt="Exercise example"
-                key={`image-${exerciseImage.exercise_base}`}
+                key={`image-${exercise.name}`}
               />
             )}
             <h2 key={`${exercise}`}>{exercise.name}</h2>
@@ -81,8 +97,7 @@ function App(): JSX.Element {
             })}
           </div>
         );
-      })}
-    </div>
+      })} */
   );
 }
 
