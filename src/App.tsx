@@ -5,7 +5,6 @@ import { ExerciseImageType } from "./types/ExerciseImageType";
 import { ExerciseType } from "./types/ExerciseType";
 import { getMuscleName } from "./utils/getMuscleName";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Container } from "react-bootstrap";
 import { getExerciseImage } from "./utils/getExerciseImage";
 import { NavigationBar } from "./components/NavigationBar";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
@@ -77,9 +76,8 @@ function App(): JSX.Element {
           <Route path="/stats" element={<StatsPage />} />
         </Routes>
       </Router>
-    </>
 
-    /* {exerciseList.map((exercise, index) => {
+      {exerciseList.map((exercise, index) => {
         const exerciseImage = getExerciseImage(imageList, exercise);
         return (
           <div key={`div-${index}`}>
@@ -97,7 +95,8 @@ function App(): JSX.Element {
             })}
           </div>
         );
-      })} */
+      })}
+    </>
   );
 }
 
