@@ -1,0 +1,98 @@
+.home-page {
+  color: rgb(59, 59, 59);
+}
+
+.general-stats {
+  width: 80vw;
+  height: 25vw;
+  margin: 5vh auto;
+  display: flex;
+}
+
+.general-stats div {
+  background-color: #80deea;
+  color: white;
+  padding: 1rem;
+  margin: 0 0.5rem;
+  text-align: center;
+  width: 33%;
+  border-radius: 10px;
+
+  box-shadow: 2px 2px 2px #a2cacf;
+}
+
+.general-stats-pbs,
+.general-stats-workouts,
+.general-stats-weight {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.general-stats-pbs-num,
+.general-stats-workouts-num,
+.general-stats-weight-num {
+  margin-top: 2vw;
+  font-size: 10vw;
+}
+
+.general-stats-pbs-desc,
+.general-stats-workouts-desc,
+.general-stats-weight-desc {
+  font-size: 3vw;
+}
+
+.workout-list {
+  width: 80vw;
+  margin: 5vh auto;
+}
+
+.workout-card {
+  background-color: #e0f7fa;
+  padding: 1rem;
+  margin: 1rem 0.5rem;
+  box-shadow: 2px 2px 2px #888888;
+  border-radius: 10px;
+}
+
+.workout-card-row1,
+.workout-card-row2 {
+  display: flex;
+  align-items: flex-end;
+}
+
+.workout-card-title {
+  font-size: 3vw;
+  margin-right: 2vw;
+}
+
+.workout-card-day {
+  font-size: 2vw;
+  margin-right: 3vw;
+}
+
+.workout-card-date {
+  font-size: 1.5vw;
+  color: #888888;
+}
+
+.workout-card-weight-lifted,
+.workout-card-duration,
+.workout-card-exercises {
+  color: #006064;
+  margin: auto 1vw;
+  font-size: 2vw;
+}
+
+.workout-card-best-sets-title {
+  font-size: 2vw;
+}
+
+.workout-card-best-set {
+  display: flex;
+  justify-content: space-between;
+}
+
+.workout-card-best-set h6 {
+  font-size: 1.5vw;
+}
