@@ -9,18 +9,18 @@ import { getExerciseImage } from "./utils/getExerciseImage";
 import { NavigationBar } from "./components/NavigationBar";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import { StatsPage } from "./components/StatsPage";
-import { HomePage } from "./components/HomePage";
+import { HomePage } from "./components/HomePage/HomePage";
 import { LogWorkout } from "./components/LogWorkout";
 import { config } from "dotenv";
 
 config();
 
-function App(): JSX.Element {
-  const baseURL = process.env.REACT_APP_API_BASE;
+const baseURL = process.env.REACT_APP_API_BASE;
 
+function App(): JSX.Element {
   const [exerciseList, setExerciseList] = useState<ExerciseType[]>([]);
   const [imageList, setImageList] = useState<ExerciseImageType[]>([]);
-  const [muscleList, setMuslceList] = useState<MuscleType[]>([]);
+  const [muscleList, setMuscleList] = useState<MuscleType[]>([]);
 
   const getExercises = useCallback(async () => {
     try {
@@ -57,43 +57,41 @@ function App(): JSX.Element {
     try {
       const res = await axios.get("https://wger.de/api/v2/muscle/");
       const muscleResults: MuscleType[] = res.data.results;
-      setMuslceList(muscleResults);
+      setMuscleList(muscleResults);
       console.log(muscleResults);
     } catch (err) {
       console.log(err);
     }
   }, []);
 
-  const postSets = useCallback(async () => {
-    console.log(`${baseURL}/2/sets`);
-    const data = {
-      data: [
-        {
-          name: "raaaa",
-          weight: 45,
-          reps: 9,
-        },
-        {
-          name: "ya mum",
-          weight: 55,
-          reps: 9,
-        },
-      ],
-    };
-    try {
-      const res = await axios.post(`${baseURL}2/sets`, data);
-      console.log(res);
-    } catch (err) {
-      console.log(err);
-    }
-  }, [baseURL]);
+  // const postSets = useCallback(async () => {
+  //   const data = {
+  //     data: [
+  //       {
+  //         name: "raaaa",
+  //         weight: 45,
+  //         reps: 9,
+  //       },
+  //       {
+  //         name: "ya mum",
+  //         weight: 55,
+  //         reps: 9,
+  //       },
+  //     ],
+  //   };
+  //   try {
+  //     const res = await axios.post(`${baseURL}/2/sets`, data);
+  //     console.log(res);
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // }, []);
 
   useEffect(() => {
     getExercises();
     getImages();
     getMuscles();
-    postSets();
-  }, [getExercises, getImages, getMuscles, postSets]);
+  }, [getExercises, getImages, getMuscles]);
 
   return (
     <>
@@ -107,7 +105,7 @@ function App(): JSX.Element {
         </Routes>
       </Router>
 
-      {exerciseList.map((exercise, index) => {
+      {/* {exerciseList.map((exercise, index) => {
         const exerciseImage = getExerciseImage(imageList, exercise);
         return (
           <div key={`div-${index}`}>
@@ -125,7 +123,7 @@ function App(): JSX.Element {
             })}
           </div>
         );
-      })}
+      })} */}
     </>
   );
 }

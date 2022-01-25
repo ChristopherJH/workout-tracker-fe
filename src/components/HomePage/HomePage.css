@@ -1,0 +1,32 @@
+.general-stats {
+  width: 80vw;
+  height: 30vw;
+  margin: 5vh auto;
+  display: flex;
+}
+
+.general-stats div {
+  background-color: rgb(41, 41, 41);
+  color: white;
+  padding: 1rem;
+  margin: 1rem;
+  text-align: center;
+  width: 33%;
+  box-shadow: 5px 5px 5px #888888;
+}
+
+.general-stats-pbs-num,
+.general-stats-workouts-num,
+.general-stats-weight-num {
+  font-size: 10vw;
+}
+
+.general-stats-pbs-desc,
+.general-stats-workouts-desc,
+.general-stats-weight-desc {
+  font-size: 3vw;
+}
+
+.workout-card-header {
+  display: flex;
+}
