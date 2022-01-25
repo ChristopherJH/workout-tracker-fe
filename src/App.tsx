@@ -11,8 +11,13 @@ import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import { StatsPage } from "./components/StatsPage";
 import { HomePage } from "./components/HomePage";
 import { LogWorkout } from "./components/LogWorkout";
+import { config } from "dotenv";
+
+config();
 
 function App(): JSX.Element {
+  const baseURL = process.env.REACT_APP_API_BASE;
+
   const [exerciseList, setExerciseList] = useState<ExerciseType[]>([]);
   const [imageList, setImageList] = useState<ExerciseImageType[]>([]);
   const [muscleList, setMuslceList] = useState<MuscleType[]>([]);
@@ -59,11 +64,36 @@ function App(): JSX.Element {
     }
   }, []);
 
+  const postSets = useCallback(async () => {
+    console.log(`${baseURL}/2/sets`);
+    const data = {
+      data: [
+        {
+          name: "raaaa",
+          weight: 45,
+          reps: 9,
+        },
+        {
+          name: "ya mum",
+          weight: 55,
+          reps: 9,
+        },
+      ],
+    };
+    try {
+      const res = await axios.post(`${baseURL}2/sets`, data);
+      console.log(res);
+    } catch (err) {
+      console.log(err);
+    }
+  }, [baseURL]);
+
   useEffect(() => {
     getExercises();
     getImages();
     getMuscles();
-  }, [getExercises, getImages, getMuscles]);
+    postSets();
+  }, [getExercises, getImages, getMuscles, postSets]);
 
   return (
     <>
