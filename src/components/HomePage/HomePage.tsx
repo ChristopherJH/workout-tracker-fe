@@ -4,36 +4,13 @@ import "./HomePage.css";
 import { config } from "dotenv";
 import { FaWeightHanging, FaClock } from "react-icons/fa";
 import { GiWeightLiftingUp } from "react-icons/gi";
+import { WorkoutType } from "../../types/WorkoutType";
+import { SetType } from "../../types/SetType";
+import { BestSetType } from "../../types/BestSetType";
 
 config();
 
 const baseURL = process.env.REACT_APP_API_BASE;
-
-interface WorkoutType {
-  workout_id: number;
-  title: string;
-  day: string;
-  duration_mins: number;
-  notes: string;
-  date: string;
-  weight_lifted: number;
-  exercises: number;
-}
-
-interface SetType {
-  set_id: number;
-  workout_id: number;
-  name: string;
-  weight: number;
-  reps: number;
-}
-
-interface BestSetType {
-  workout_id: number;
-  name: string;
-  weight: number;
-  reps: number;
-}
 
 export function HomePage(): JSX.Element {
   const [workoutsList, setWorkoutsList] = useState<WorkoutType[]>([]);

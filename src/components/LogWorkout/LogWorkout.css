@@ -1,0 +1,10 @@
+.log-workout {
+  max-width: 80vw;
+  margin: auto;
+}
+
+.workout-form-exercise-headers,
+.workout-form-prev-sets-card {
+  display: flex;
+  justify-content: space-between;
+}
