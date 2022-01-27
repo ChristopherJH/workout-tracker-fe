@@ -14,7 +14,6 @@ import {
   Tooltip,
   Legend,
   BarElement,
-  ChartData,
 } from "chart.js";
 
 ChartJS.register(
