@@ -1,3 +1,7 @@
 export function StatsPage(): JSX.Element {
-  return <h1>Statistics</h1>;
+  return (
+    <div className="stats-page">
+      <h1>Statistics</h1>
+    </div>
+  );
 }
