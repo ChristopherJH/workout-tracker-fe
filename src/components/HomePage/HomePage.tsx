@@ -12,11 +12,15 @@ config();
 
 const baseURL = process.env.REACT_APP_API_BASE;
 
-export function HomePage(): JSX.Element {
-  const [workoutsList, setWorkoutsList] = useState<WorkoutType[]>([]);
+interface HomePageProps {
+  workoutsList: WorkoutType[];
+  setWorkoutsList: (input: WorkoutType[]) => void;
+}
+export function HomePage(props: HomePageProps): JSX.Element {
   const [setsList, setSetsList] = useState<SetType[]>([]);
   const [bestSetsList, setBestSetsList] = useState<SetType[]>([]);
 
+  const { setWorkoutsList } = props;
   const getWorkouts = useCallback(async () => {
     try {
       const res = await axios.get(`${baseURL}/workouts`);
@@ -26,7 +30,7 @@ export function HomePage(): JSX.Element {
     } catch (err) {
       console.log(err);
     }
-  }, []);
+  }, [setWorkoutsList]);
 
   const getSets = useCallback(async () => {
     console.log("trying to getSets");
@@ -77,7 +81,7 @@ export function HomePage(): JSX.Element {
       </div>
       {/* List of past workouts */}
       <div className="workout-list">
-        {workoutsList.map((workout, index) => {
+        {props.workoutsList.map((workout, index) => {
           return (
             <WorkoutCard
               key={index}

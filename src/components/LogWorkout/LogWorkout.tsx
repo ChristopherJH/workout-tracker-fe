@@ -1,9 +1,23 @@
 import { useState } from "react";
 import { ExerciseType } from "../../types/ExerciseType";
 import "./LogWorkout.css";
+import { GrAddCircle } from "react-icons/gr";
+import { MdDone } from "react-icons/md";
+import DatePicker from "react-datepicker";
+import { useNavigate } from "react-router-dom";
+
+import "react-datepicker/dist/react-datepicker.css";
+import axios from "axios";
+import { config } from "dotenv";
+import { WorkoutType } from "../../types/WorkoutType";
+
+config();
+
+const baseURL = process.env.REACT_APP_API_BASE;
 
 interface LogWorkoutProps {
   exerciseList: ExerciseType[];
+  setWorkoutsList: (input: WorkoutType[]) => void;
 }
 
 export function LogWorkout(props: LogWorkoutProps): JSX.Element {
@@ -12,19 +26,25 @@ export function LogWorkout(props: LogWorkoutProps): JSX.Element {
       <div className="log-workout-title">
         <h1>Log a workout</h1>
       </div>
-      <WorkoutForm exerciseList={props.exerciseList} />
+      <WorkoutForm
+        exerciseList={props.exerciseList}
+        setWorkoutsList={props.setWorkoutsList}
+      />
     </div>
   );
 }
 
 interface WorkoutFormProps {
   exerciseList: ExerciseType[];
+  setWorkoutsList: (input: WorkoutType[]) => void;
 }
 
 interface FormContentType {
   title: string;
   day: string;
   notes: string;
+  duration_mins: number;
+  date: Date;
 }
 
 interface SetContentType {
@@ -45,55 +65,110 @@ const defaultFormContent: FormContentType = {
   title: "Workout",
   day: "",
   notes: "",
+  duration_mins: 0,
+  date: new Date(),
 };
 
 function WorkoutForm(props: WorkoutFormProps): JSX.Element {
   const [formContent, setFormContent] =
     useState<FormContentType>(defaultFormContent);
   const [currSet, setCurrSet] = useState<SetContentType>(defaultSetContent);
-  const setsArray: SetContentType[] = [];
+  const [setsArray, setSetsArray] = useState<SetContentType[]>([]);
+  const navigate = useNavigate();
 
-  function handlePostWorkout() {
-    console.log("incomplete function");
+  async function handlePostWorkout(
+    workoutData: FormContentType,
+    setsData: SetContentType[]
+  ) {
+    try {
+      const workoutRes = await axios.post(`${baseURL}/workout`, workoutData);
+      console.log({ workoutRes });
+      const updateWorkoutsRes = await axios.get(`${baseURL}/workouts`);
+      const workoutResults = updateWorkoutsRes.data.data;
+      props.setWorkoutsList(workoutResults);
+      const setsRes = await axios.post(
+        `${baseURL}/${workoutRes.data.data.workout_id}/sets`,
+        { data: setsData }
+      );
+      navigate("/");
+      setFormContent(defaultFormContent);
+
+      setSetsArray([]);
+      console.log(setsRes);
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   return (
     <div className="workout-form">
       <form>
-        <div className="form-row">
-          <label htmlFor="inputTitle">Title</label>
-          <input
-            type="text"
-            className="form-control"
-            id="inputTitle"
-            placeholder="Afternoon Workout"
-            value={formContent.title}
-            onChange={(e) =>
-              setFormContent({
-                ...formContent,
-                title: e.target.value,
-              })
-            }
-          />
+        <div>
+          <label className="workout-form-title-label">
+            Title
+            <input
+              type="text"
+              className="form-control workout-form-title-input"
+              placeholder="Afternoon Workout"
+              value={formContent.title}
+              onChange={(e) =>
+                setFormContent({
+                  ...formContent,
+                  title: e.target.value,
+                })
+              }
+            />
+          </label>
         </div>
-        <div className="form-row">
-          <label htmlFor="inputDay">What day is it?</label>
-          <input
-            type="text"
-            className="form-control"
-            id="inputDay"
-            placeholder="Chest and Triceps"
-            value={formContent.day}
-            onChange={(e) =>
-              setFormContent({
-                ...formContent,
-                day: e.target.value,
-              })
-            }
-          />
+        <div>
+          <label className="workout-form-day-label">
+            What day is it?
+            <input
+              type="text"
+              className="form-control workout-form-day-input"
+              placeholder="Chest and Triceps"
+              value={formContent.day}
+              onChange={(e) =>
+                setFormContent({
+                  ...formContent,
+                  day: e.target.value,
+                })
+              }
+            />
+          </label>
+        </div>
+        <div className="workout-form-date-picker">
+          <label className="workout-form-date-label">
+            When did you workout?
+            <DatePicker
+              selected={formContent.date}
+              onChange={(date) => {
+                setFormContent({
+                  ...formContent,
+                  date: date !== null ? date : new Date(),
+                });
+              }}
+            />
+          </label>
+        </div>
+        <div>
+          <label className="workout-form-day-label">
+            For how long (minutes)?
+            <input
+              className="form-control workout-form-duration-input"
+              placeholder="50"
+              value={formContent.duration_mins}
+              onChange={(e) =>
+                setFormContent({
+                  ...formContent,
+                  duration_mins: parseInt(e.target.value),
+                })
+              }
+            />
+          </label>
         </div>
         <hr />
-        <div className="form-row workout-form-exercise-headers">
+        <div className="workout-form-exercise-headers">
           <h4>Exercise</h4>
           <h4>Weight (Kg)</h4>
           <h4>Reps</h4>
@@ -113,12 +188,11 @@ function WorkoutForm(props: WorkoutFormProps): JSX.Element {
             );
           })}
         </div>
-        <div className="form-row workout-form-sets-inputs">
-          <div className="form-group">
-            <div className="form-group col-md-6 workout-form-name-input">
+        <div className="workout-form-sets-inputs">
+          <div>
+            <div className="workout-form-name-input">
               {/* Dropdown for exercises from api */}
               <select
-                id="exerciseDropdown"
                 className="form-control"
                 value={currSet.name}
                 onChange={(e) => {
@@ -135,11 +209,10 @@ function WorkoutForm(props: WorkoutFormProps): JSX.Element {
                 })}
               </select>
             </div>
-            <div className="form-group col-md-3 workout-form-weight-input">
+            <div className="workout-form-weight-input">
               <input
                 type="text"
                 className="form-control"
-                id="inputWeight"
                 value={currSet.weight}
                 onChange={(e) => {
                   setCurrSet({
@@ -149,11 +222,10 @@ function WorkoutForm(props: WorkoutFormProps): JSX.Element {
                 }}
               />
             </div>
-            <div className="form-group col-md-3 workout-form-reps-input">
+            <div className="workout-form-reps-input">
               <input
                 type="text"
                 className="form-control"
-                id="inputReps"
                 value={currSet.reps}
                 onChange={(e) => {
                   setCurrSet({
@@ -166,25 +238,31 @@ function WorkoutForm(props: WorkoutFormProps): JSX.Element {
           </div>
         </div>
         <div className="workout-form-add-set">
+          <div className="workout-form-add-set-icon">
+            <GrAddCircle />
+          </div>
           <button
-            className="btn btn-primary workout-form-add-set-button"
+            className="workout-form-add-set-button"
             onClick={(e) => {
               e.preventDefault();
-              setsArray.push(currSet);
-              setCurrSet(defaultSetContent);
-              console.log(setsArray);
+              setSetsArray((prevVals) => [...prevVals, currSet]);
             }}
           >
             New set
           </button>
         </div>
-        <button
-          type="submit"
-          className="btn btn-primary"
-          onClick={() => handlePostWorkout()}
-        >
-          Finish Workout
-        </button>
+        <div>
+          <button
+            type="submit"
+            onClick={(e) => {
+              e.preventDefault();
+              handlePostWorkout(formContent, setsArray);
+            }}
+          >
+            <MdDone />
+            Finish Workout
+          </button>
+        </div>
       </form>
     </div>
   );
