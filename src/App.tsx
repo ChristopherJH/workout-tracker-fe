@@ -1,16 +1,17 @@
 import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
-import { MuscleType } from "./types/MuscleType";
-import { ExerciseImageType } from "./types/ExerciseImageType";
+// import { MuscleType } from "./types/MuscleType";
+// import { ExerciseImageType } from "./types/ExerciseImageType";
 import { ExerciseType } from "./types/ExerciseType";
-import { getMuscleName } from "./utils/getMuscleName";
+// import { getMuscleName } from "./utils/getMuscleName";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { getExerciseImage } from "./utils/getExerciseImage";
+// import { getExerciseImage } from "./utils/getExerciseImage";
 import { NavigationBar } from "./components/NavigationBar";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import { StatsPage } from "./components/StatsPage";
 import { HomePage } from "./components/HomePage/HomePage";
 import { LogWorkout } from "./components/LogWorkout/LogWorkout";
+import { WorkoutType } from "./types/WorkoutType";
 // import { config } from "dotenv";
 
 // config();
@@ -19,8 +20,10 @@ import { LogWorkout } from "./components/LogWorkout/LogWorkout";
 
 function App(): JSX.Element {
   const [exerciseList, setExerciseList] = useState<ExerciseType[]>([]);
-  const [imageList, setImageList] = useState<ExerciseImageType[]>([]);
-  const [muscleList, setMuscleList] = useState<MuscleType[]>([]);
+  const [workoutsList, setWorkoutsList] = useState<WorkoutType[]>([]);
+
+  // const [imageList, setImageList] = useState<ExerciseImageType[]>([]);
+  // const [muscleList, setMuscleList] = useState<MuscleType[]>([]);
 
   const getExercises = useCallback(async () => {
     try {
@@ -32,47 +35,47 @@ function App(): JSX.Element {
       let filteredResults: ExerciseType[] = exerciseResults.filter(
         (exercise) => exercise.language === 2 && exercise.muscles.length > 0
       );
+      // Remove exercises with duplicate names
       filteredResults = filteredResults.filter(
         (v, i, a) => a.findIndex((t) => t.name === v.name) === i
       );
 
       setExerciseList(filteredResults);
-      console.log(filteredResults);
     } catch (err) {
       console.log(err);
     }
   }, []);
 
-  const getImages = useCallback(async () => {
-    try {
-      // Custom link obtained from seeing how many images are in database (118) and limiting the search to those
-      const res = await axios.get(
-        "https://wger.de/api/v2/exerciseimage/?limit=118&offset=0"
-      );
-      const imageResults: ExerciseImageType[] = res.data.results;
-      setImageList(imageResults);
-      console.log(imageResults);
-    } catch (err) {
-      console.log(err);
-    }
-  }, []);
+  // const getImages = useCallback(async () => {
+  //   try {
+  //     // Custom link obtained from seeing how many images are in database (118) and limiting the search to those
+  //     const res = await axios.get(
+  //       "https://wger.de/api/v2/exerciseimage/?limit=118&offset=0"
+  //     );
+  //     const imageResults: ExerciseImageType[] = res.data.results;
+  //     setImageList(imageResults);
+  //     console.log(imageResults);
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // }, []);
 
-  const getMuscles = useCallback(async () => {
-    try {
-      const res = await axios.get("https://wger.de/api/v2/muscle/");
-      const muscleResults: MuscleType[] = res.data.results;
-      setMuscleList(muscleResults);
-      console.log(muscleResults);
-    } catch (err) {
-      console.log(err);
-    }
-  }, []);
+  // const getMuscles = useCallback(async () => {
+  //   try {
+  //     const res = await axios.get("https://wger.de/api/v2/muscle/");
+  //     const muscleResults: MuscleType[] = res.data.results;
+  //     setMuscleList(muscleResults);
+  //     console.log(muscleResults);
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // }, []);
 
   useEffect(() => {
     getExercises();
-    getImages();
-    getMuscles();
-  }, [getExercises, getImages, getMuscles]);
+    // getImages();
+    // getMuscles();
+  }, [getExercises]);
 
   return (
     <>
@@ -80,16 +83,29 @@ function App(): JSX.Element {
       {/* Define the files that should be accessed when a given path is accessed */}
       <Router>
         <Routes>
-          <Route path="/" element={<HomePage />} />
+          <Route
+            path="/"
+            element={
+              <HomePage
+                workoutsList={workoutsList}
+                setWorkoutsList={setWorkoutsList}
+              />
+            }
+          />
           <Route
             path="/new"
-            element={<LogWorkout exerciseList={exerciseList} />}
+            element={
+              <LogWorkout
+                exerciseList={exerciseList}
+                setWorkoutsList={setWorkoutsList}
+              />
+            }
           />
           <Route path="/stats" element={<StatsPage />} />
         </Routes>
       </Router>
 
-      {exerciseList.map((exercise, index) => {
+      {/* {exerciseList.map((exercise, index) => {
         const exerciseImage = getExerciseImage(imageList, exercise);
         return (
           <div key={`div-${index}`}>
@@ -107,7 +123,7 @@ function App(): JSX.Element {
             })}
           </div>
         );
-      })}
+      })} */}
     </>
   );
 }
