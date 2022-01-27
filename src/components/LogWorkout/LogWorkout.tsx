@@ -81,13 +81,13 @@ function WorkoutForm(props: WorkoutFormProps): JSX.Element {
     setsData: SetContentType[]
   ) {
     try {
-      const workoutRes = await axios.post(`${baseURL}workout`, workoutData);
+      const workoutRes = await axios.post(`${baseURL}/workout`, workoutData);
       console.log({ workoutRes });
-      const updateWorkoutsRes = await axios.get(`${baseURL}workouts`);
+      const updateWorkoutsRes = await axios.get(`${baseURL}/workouts`);
       const workoutResults = updateWorkoutsRes.data.data;
       props.setWorkoutsList(workoutResults);
       const setsRes = await axios.post(
-        `${baseURL}${workoutRes.data.data.workout_id}/sets`,
+        `${baseURL}/${workoutRes.data.data.workout_id}/sets`,
         { data: setsData }
       );
       navigate("/");
