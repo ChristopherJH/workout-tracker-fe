@@ -24,7 +24,7 @@ export function HomePage(props: HomePageProps): JSX.Element {
   const { setWorkoutsList } = props;
   const getWorkouts = useCallback(async () => {
     try {
-      const res = await axios.get(`${baseURL}workouts`);
+      const res = await axios.get(`${baseURL}/workouts`);
       const workoutResults = res.data.data;
       setWorkoutsList(workoutResults);
       console.log(workoutResults);
@@ -35,7 +35,7 @@ export function HomePage(props: HomePageProps): JSX.Element {
 
   const getSets = useCallback(async () => {
     try {
-      const res = await axios.get(`${baseURL}sets`);
+      const res = await axios.get(`${baseURL}/sets`);
       const setResults = res.data.data;
       setSetsList(setResults);
       console.log({ setResults });
@@ -46,7 +46,7 @@ export function HomePage(props: HomePageProps): JSX.Element {
 
   const getTotalWeight = useCallback(async () => {
     try {
-      const res = await axios.get(`${baseURL}totalweight`);
+      const res = await axios.get(`${baseURL}/totalweight`);
       const weightResult = res.data.data[0].sum;
       setTotalWeight(weightResult);
       console.log({ weightResult });
@@ -58,7 +58,7 @@ export function HomePage(props: HomePageProps): JSX.Element {
   const getBestSets = useCallback(async () => {
     console.log("trying to getSets");
     try {
-      const res = await axios.get(`${baseURL}sets/best`);
+      const res = await axios.get(`${baseURL}/sets/best`);
       const setResults = res.data.data;
       setBestSetsList(setResults);
       console.log({ setResults });
