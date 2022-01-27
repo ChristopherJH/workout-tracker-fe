@@ -7,6 +7,7 @@ import { GiWeightLiftingUp } from "react-icons/gi";
 import { WorkoutType } from "../../types/WorkoutType";
 import { SetType } from "../../types/SetType";
 import { BestSetType } from "../../types/BestSetType";
+import moment from "moment";
 
 config();
 
@@ -19,11 +20,11 @@ interface HomePageProps {
 export function HomePage(props: HomePageProps): JSX.Element {
   const [setsList, setSetsList] = useState<SetType[]>([]);
   const [bestSetsList, setBestSetsList] = useState<SetType[]>([]);
-
+  const [totalWeight, setTotalWeight] = useState<number>(0);
   const { setWorkoutsList } = props;
   const getWorkouts = useCallback(async () => {
     try {
-      const res = await axios.get(`${baseURL}/workouts`);
+      const res = await axios.get(`${baseURL}workouts`);
       const workoutResults = res.data.data;
       setWorkoutsList(workoutResults);
       console.log(workoutResults);
@@ -33,9 +34,8 @@ export function HomePage(props: HomePageProps): JSX.Element {
   }, [setWorkoutsList]);
 
   const getSets = useCallback(async () => {
-    console.log("trying to getSets");
     try {
-      const res = await axios.get(`${baseURL}/sets`);
+      const res = await axios.get(`${baseURL}sets`);
       const setResults = res.data.data;
       setSetsList(setResults);
       console.log({ setResults });
@@ -44,10 +44,21 @@ export function HomePage(props: HomePageProps): JSX.Element {
     }
   }, []);
 
+  const getTotalWeight = useCallback(async () => {
+    try {
+      const res = await axios.get(`${baseURL}totalweight`);
+      const weightResult = res.data.data[0].sum;
+      setTotalWeight(weightResult);
+      console.log({ weightResult });
+    } catch (err) {
+      console.log(err);
+    }
+  }, []);
+
   const getBestSets = useCallback(async () => {
     console.log("trying to getSets");
     try {
-      const res = await axios.get(`${baseURL}/sets/best`);
+      const res = await axios.get(`${baseURL}sets/best`);
       const setResults = res.data.data;
       setBestSetsList(setResults);
       console.log({ setResults });
@@ -60,7 +71,8 @@ export function HomePage(props: HomePageProps): JSX.Element {
     getWorkouts();
     getSets();
     getBestSets();
-  }, [getWorkouts, getSets, getBestSets]);
+    getTotalWeight();
+  }, [getWorkouts, getSets, getBestSets, getTotalWeight]);
 
   return (
     <div className="home-page">
@@ -71,12 +83,16 @@ export function HomePage(props: HomePageProps): JSX.Element {
           <h3 className="general-stats-pbs-desc">PBs</h3>
         </div>
         <div className="general-stats-workouts">
-          <h2 className="general-stats-workouts-num">X</h2>
+          <h2 className="general-stats-workouts-num">
+            {props.workoutsList.length}
+          </h2>
           <h3 className="general-stats-workouts-desc">Workouts</h3>
         </div>
         <div className="general-stats-weight">
-          <h2 className="general-stats-weight-num">X</h2>
-          <h3 className="general-stats-weight-desc">Weight Lifted</h3>
+          <h2 className="general-stats-weight-num">
+            {parseFloat((totalWeight / 1000).toPrecision(3))}
+          </h2>
+          <h3 className="general-stats-weight-desc">Tonnes Lifted</h3>
         </div>
       </div>
       {/* List of past workouts */}
@@ -129,7 +145,9 @@ function WorkoutCard(props: WorkoutCardProps): JSX.Element {
       </div>
       <div className="workout-card-row2">
         <h3 className="workout-card-day">{props.workout.day}</h3>
-        <h4 className="workout-card-date">{props.workout.date}</h4>
+        <h4 className="workout-card-date">
+          {moment(props.workout.date).calendar()}
+        </h4>
       </div>
       <hr />
       <div className="workout-card-body">
