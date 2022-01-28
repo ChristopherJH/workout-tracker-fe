@@ -1,6 +1,9 @@
 import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
-
+import {
+  fillWorkoutsPerWeek,
+  QueryDataType,
+} from "../utils/fillWorkoutsPerWeek";
 import { config } from "dotenv";
 import moment from "moment";
 import { Bar } from "react-chartjs-2";
@@ -15,6 +18,7 @@ import {
   Legend,
   BarElement,
 } from "chart.js";
+import { weekToDate } from "../utils/weekToDate";
 
 ChartJS.register(
   CategoryScale,
@@ -69,10 +73,12 @@ function WorkoutsPerWeek(): JSX.Element {
 
   // Number of weeks we want to show on our graph
   const numOfWeeks = 8;
+  // Increase offset to view previous weeks
+  const offset = 0;
   // Array to be filled with dates
   const weeksData = [];
   // For each week, get the date of the start of the week, and subtract week numbers
-  for (let i = numOfWeeks; i > 0; i--) {
+  for (let i = numOfWeeks + offset; i > offset; i--) {
     weeksData.push(
       moment()
         .day("Monday")
@@ -80,36 +86,33 @@ function WorkoutsPerWeek(): JSX.Element {
         .format("DD/MM")
     );
   }
-  console.log(weeksData);
 
   // Formatting the dates received from the backend
-  const formattedData = workoutsPerWeek.map((row, index) => {
+  const formattedData: QueryDataType[] = workoutsPerWeek.map((row, index) => {
     const date = weekToDate(row.week, row.yr);
     return { date: moment(date).format("DD/MM"), count: row.num };
   });
-  console.log({ formattedData });
 
-  //const countData = weeksData.map((week) => formattedData[week]);
-
+  const countsData = fillWorkoutsPerWeek(weeksData, formattedData);
   return (
     <div className="stats-page-wpw">
       <Bar
         data={{
           labels: weeksData,
-          datasets: [{ label: "Date", data: [2, 0, 0, 0, 0, 0, 0, 0] }],
+          datasets: [{ data: countsData }],
         }}
         height={400}
         width={600}
-        options={{ maintainAspectRatio: false }}
+        options={{
+          maintainAspectRatio: false,
+          plugins: {
+            title: {
+              display: true,
+              text: "Workouts per week",
+            },
+          },
+        }}
       />
     </div>
   );
-}
-
-function weekToDate(week: number, year: number): Date {
-  return moment()
-    .day("Monday")
-    .year(year)
-    .week(week + 1)
-    .toDate();
 }
