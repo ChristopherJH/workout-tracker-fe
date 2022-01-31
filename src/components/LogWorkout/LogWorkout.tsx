@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { ExerciseType } from "../../types/ExerciseType";
 import "./LogWorkout.css";
-import { GrAddCircle } from "react-icons/gr";
 import { MdAddCircleOutline, MdDone } from "react-icons/md";
 import DatePicker from "react-datepicker";
 import { useNavigate } from "react-router-dom";
