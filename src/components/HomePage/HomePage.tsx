@@ -3,6 +3,8 @@ import { useCallback, useEffect, useState } from "react";
 import "./HomePage.css";
 import { config } from "dotenv";
 import { FaWeightHanging, FaClock } from "react-icons/fa";
+
+import { CgArrowsExpandRight } from "react-icons/cg";
 import { GiWeightLiftingUp } from "react-icons/gi";
 import { WorkoutType } from "../../types/WorkoutType";
 import { SetType } from "../../types/SetType";
@@ -129,19 +131,30 @@ function WorkoutCard(props: WorkoutCardProps): JSX.Element {
       id={`workout-card-${props.workout.workout_id}`}
     >
       <div className="workout-card-row1">
-        <h2 className="workout-card-title">{props.workout.title}</h2>
-        <h3 className="workout-card-weight-lifted">
-          <FaWeightHanging />
-          {props.workout.weight_lifted}
-        </h3>
-        <h3 className="workout-card-duration">
-          <FaClock />
-          {props.workout.duration_mins}
-        </h3>
-        <h3 className="workout-card-exercises">
-          <GiWeightLiftingUp />
-          {props.workout.exercises}
-        </h3>
+        <div className="workout-card-title">
+          <h2>{props.workout.title}</h2>
+        </div>
+        <div className="workout-card-weight-lifted">
+          <h3 className="workout-card-weight-lifted-icon">
+            {" "}
+            <FaWeightHanging />
+          </h3>
+          <h3>{props.workout.weight_lifted}</h3>
+        </div>
+        <div className="workout-card-duration">
+          <h3 className="workout-card-duration-icon">
+            {" "}
+            <FaClock />
+          </h3>
+          <h3>{props.workout.duration_mins}</h3>
+        </div>
+        <div className="workout-card-exercises">
+          <h3 className="workout-card-exercises-icon">
+            {" "}
+            <GiWeightLiftingUp />
+          </h3>
+          <h3>{props.workout.exercises}</h3>
+        </div>
       </div>
       <div className="workout-card-row2">
         <h3 className="workout-card-day">{props.workout.day}</h3>
@@ -150,20 +163,70 @@ function WorkoutCard(props: WorkoutCardProps): JSX.Element {
         </h4>
       </div>
       <hr />
-      <div className="workout-card-body">
-        <h5 className="workout-card-best-sets-title">Highlights</h5>
-        {props.bestSetsList.slice(0, 3).map((set, index) => {
-          return (
-            <div
-              key={`best-set-div-${index}`}
-              className="workout-card-best-set"
-            >
-              <h6 key={`best-set-name-${index}`}>{set.name}</h6>
-              <h6 key={`best-set-weight-${index}`}>{set.weight} Kg</h6>
-              <h6 key={`best-set-reps-${index}`}>{set.reps}x</h6>
-            </div>
-          );
-        })}
+      <div className={`workout-card-body-${props.workout.workout_id}`}>
+        <div
+          className={`workout-card-highlights collapse show multi-collapse-${props.workout.workout_id}`}
+          id={`highlights-${props.workout.workout_id}`}
+        >
+          <h5 className="workout-card-best-sets-title">Highlights</h5>
+          {props.bestSetsList.slice(0, 3).map((set, index) => {
+            return (
+              <div
+                key={`best-set-div-${index}`}
+                className="row workout-card-best-set"
+              >
+                <h6 key={`best-set-name-${index}`} className="col-6">
+                  {set.name}
+                </h6>
+                <h6 key={`best-set-weight-${index}`} className="col-2">
+                  {set.weight} Kg
+                </h6>
+                <h6 key={`best-set-reps-${index}`} className="col-2">
+                  {set.reps}x
+                </h6>
+              </div>
+            );
+          })}
+        </div>
+        <div
+          className={`workout-card-all-sets collapse multi-collapse-${props.workout.workout_id}`}
+          id={`all-sets-${props.workout.workout_id}`}
+        >
+          <h5 className="workout-card-all-sets-title">Sets</h5>
+          {props.setsList.map((set, index) => {
+            // Only display workout name if it is the first instance of it
+            let firstSet = true;
+            if (index !== 0 && set.name === props.setsList[index - 1].name) {
+              firstSet = false;
+            }
+            return (
+              <div key={`set-div-${index}`} className="row workout-card-set">
+                <h6 key={`set-name-${index}`} className="col-6">
+                  {firstSet ? set.name : "-"}
+                </h6>
+                <h6 key={`set-weight-${index}`} className="col-2">
+                  {set.weight} Kg
+                </h6>
+                <h6 key={`set-reps-${index}`} className="col-2">
+                  {set.reps}x
+                </h6>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+      <div className="workout-card-footer">
+        <button
+          className="workout-card-expand-button"
+          type="button"
+          data-parent={`.workout-card-body-${props.workout.workout_id}`}
+          data-toggle="collapse"
+          data-target={`.multi-collapse-${props.workout.workout_id}`}
+          aria-expanded="false"
+          aria-controls={`highlights-${props.workout.workout_id} all-sets-${props.workout.workout_id}`}
+        >
+          <CgArrowsExpandRight />
+        </button>
       </div>
     </div>
   );

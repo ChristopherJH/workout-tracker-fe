@@ -62,18 +62,24 @@
 }
 
 .workout-card-title {
-  font-size: 3vw;
+  font-size: 3rem;
   margin-right: 2vw;
 }
 
 .workout-card-day {
-  font-size: 2vw;
+  font-size: 2.2rem;
   margin-right: 3vw;
 }
 
 .workout-card-date {
-  font-size: 1.5vw;
+  font-size: 1.7rem;
   color: #888888;
+}
+
+.workout-card-weight-lifted h3,
+.workout-card-duration h3,
+.workout-card-exercises h3 {
+  margin-bottom: 0px;
 }
 
 .workout-card-weight-lifted,
@@ -81,18 +87,40 @@
 .workout-card-exercises {
   color: #006064;
   margin: auto 1vw;
-  font-size: 2vw;
+  font-size: 2.2rem;
+  display: flex;
 }
 
-.workout-card-best-sets-title {
-  font-size: 2vw;
+.workout-card-weight-lifted-icon,
+.workout-card-duration-icon,
+.workout-card-exercises-icon {
+  margin: auto 5px;
+  position: relative;
+  bottom: 3px;
 }
 
-.workout-card-best-set {
+.workout-card-best-sets-title,
+.workout-card-all-sets-title {
+  font-size: 2.2rem;
+}
+
+.workout-card-best-set,
+.workout-card-set {
+  color: gray;
   display: flex;
   justify-content: space-between;
 }
 
-.workout-card-best-set h6 {
-  font-size: 1.5vw;
+.workout-card-best-set h6,
+.workout-card-all-sets h6 {
+  font-size: 1.5rem;
+}
+
+.workout-card-expand-button {
+  float: right;
+  font-size: xx-large;
+}
+
+.workout-card-footer {
+  height: 40px;
 }

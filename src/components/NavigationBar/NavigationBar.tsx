@@ -2,13 +2,7 @@ import { Nav, Navbar } from "react-bootstrap";
 
 export function NavigationBar(): JSX.Element {
   return (
-    <Navbar
-      style={{ padding: "10 10" }}
-      bg="light"
-      variant="light"
-      expand="lg"
-      sticky="top"
-    >
+    <Navbar bg="light" variant="light" expand="lg" sticky="top">
       {/*  */}
       <Navbar.Brand href="/">Workout Tracker</Navbar.Brand>
 
