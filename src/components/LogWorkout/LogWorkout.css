@@ -1,6 +1,25 @@
 .log-workout {
   max-width: 80vw;
   margin: 50px auto 0px;
+  background-color: #e0f2f1;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.text-input {
+  background-color: transparent;
+  border: 0px;
+  outline: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  color: transparent;
+  border-bottom: grey 1px solid;
+  border-radius: 0px;
+}
+
+.text-input:focus {
+  background-color: transparent;
 }
 
 .workout-form-day-label,
@@ -12,19 +31,36 @@
 .workout-form-exercise-headers,
 .workout-form-prev-sets-card {
   display: flex;
-  justify-content: space-between;
+}
+
+.workout-form-exercise-headers-name,
+.workout-form-prev-sets-card-name {
+  width: 51%;
+}
+
+.workout-form-exercise-headers-weight,
+.workout-form-prev-sets-card-weight {
+  width: 25%;
 }
 
 .workout-form-sets-inputs {
   display: flex;
 }
 
+.workout-form-name-input {
+  width: 60%;
+}
+
 .workout-form-add-set {
   display: flex;
+  width: 10vw;
+  margin: 20px auto;
+  font-size: 1.1rem;
 }
 
 .workout-form-add-set-icon {
-  display: flex;
+  margin-bottom: 5px;
+  margin-right: 5px;
 }
 
 .workout-form-add-set-button {

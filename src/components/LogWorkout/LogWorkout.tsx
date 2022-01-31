@@ -43,29 +43,29 @@ interface FormContentType {
   title: string;
   day: string;
   notes: string;
-  duration_mins: number;
+  duration_mins: number | undefined;
   date: Date;
 }
 
 interface SetContentType {
   workout_id: number;
   name: string;
-  weight: number;
-  reps: number;
+  weight: number | undefined;
+  reps: number | undefined;
 }
 
 const defaultSetContent: SetContentType = {
   workout_id: 0,
   name: "",
-  weight: 0,
-  reps: 0,
+  weight: undefined,
+  reps: undefined,
 };
 
 const defaultFormContent: FormContentType = {
-  title: "Workout",
+  title: "",
   day: "",
   notes: "",
-  duration_mins: 0,
+  duration_mins: undefined,
   date: new Date(),
 };
 
@@ -108,7 +108,7 @@ function WorkoutForm(props: WorkoutFormProps): JSX.Element {
             Title
             <input
               type="text"
-              className="form-control workout-form-title-input"
+              className="text-input form-control workout-form-title-input"
               placeholder="Afternoon Workout"
               value={formContent.title}
               onChange={(e) =>
@@ -125,7 +125,7 @@ function WorkoutForm(props: WorkoutFormProps): JSX.Element {
             What day is it?
             <input
               type="text"
-              className="form-control workout-form-day-input"
+              className="text-input form-control workout-form-day-input"
               placeholder="Chest and Triceps"
               value={formContent.day}
               onChange={(e) =>
@@ -153,10 +153,11 @@ function WorkoutForm(props: WorkoutFormProps): JSX.Element {
         </div>
         <div>
           <label className="workout-form-day-label">
-            For how long (minutes)?
+            Workout duration (minutes)
             <input
-              className="form-control workout-form-duration-input"
-              placeholder="50"
+              className="text-input form-control workout-form-duration-input"
+              placeholder="50 minutes"
+              type="text"
               value={formContent.duration_mins}
               onChange={(e) =>
                 setFormContent({
@@ -169,9 +170,9 @@ function WorkoutForm(props: WorkoutFormProps): JSX.Element {
         </div>
         <hr />
         <div className="workout-form-exercise-headers">
-          <h4>Exercise</h4>
-          <h4>Weight (Kg)</h4>
-          <h4>Reps</h4>
+          <h4 className="workout-form-exercise-headers-name">Exercise</h4>
+          <h4 className="workout-form-exercise-headers-weight">Weight (Kg)</h4>
+          <h4 className="workout-form-exercise-headers-reps">Reps</h4>
         </div>
         <div className="workout-form-prev-sets">
           {setsArray.map((set, index) => {
@@ -180,61 +181,76 @@ function WorkoutForm(props: WorkoutFormProps): JSX.Element {
                 className="workout-form-prev-sets-card"
                 key={`prev-sets-div-${index}`}
               >
-                <h5 key={`prev-sets-name-${index}`}>{set.name}</h5>
-                <h5 key={`prev-sets-weight-${index}`}>{set.weight}</h5>
+                <h5
+                  className="workout-form-prev-sets-card-name"
+                  key={`prev-sets-name-${index}`}
+                >
+                  {set.name}
+                </h5>
+                <h5
+                  className="workout-form-prev-sets-card-weight"
+                  key={`prev-sets-weight-${index}`}
+                >
+                  {set.weight}
+                </h5>
 
-                <h5 key={`prev-sets-reps-${index}`}>{set.reps}</h5>
+                <h5
+                  className="workout-form-prev-sets-card-reps"
+                  key={`prev-sets-reps-${index}`}
+                >
+                  {set.reps}
+                </h5>
               </div>
             );
           })}
         </div>
         <div className="workout-form-sets-inputs">
-          <div>
-            <div className="workout-form-name-input">
-              {/* Dropdown for exercises from api */}
-              <select
-                className="form-control"
-                value={currSet.name}
-                onChange={(e) => {
-                  setCurrSet({
-                    ...currSet,
-                    name: e.target.value,
-                  });
-                }}
-              >
-                {props.exerciseList.map((exercise) => {
-                  return (
-                    <option key={`${exercise.name}`}>{exercise.name}</option>
-                  );
-                })}
-              </select>
-            </div>
-            <div className="workout-form-weight-input">
-              <input
-                type="text"
-                className="form-control"
-                value={currSet.weight}
-                onChange={(e) => {
-                  setCurrSet({
-                    ...currSet,
-                    weight: parseInt(e.target.value),
-                  });
-                }}
-              />
-            </div>
-            <div className="workout-form-reps-input">
-              <input
-                type="text"
-                className="form-control"
-                value={currSet.reps}
-                onChange={(e) => {
-                  setCurrSet({
-                    ...currSet,
-                    reps: parseInt(e.target.value),
-                  });
-                }}
-              />
-            </div>
+          <div className="workout-form-name-input">
+            {/* Dropdown for exercises from api */}
+            <select
+              className="form-control"
+              value={currSet.name}
+              onChange={(e) => {
+                setCurrSet({
+                  ...currSet,
+                  name: e.target.value,
+                });
+              }}
+            >
+              {props.exerciseList.map((exercise) => {
+                return (
+                  <option key={`${exercise.name}`}>{exercise.name}</option>
+                );
+              })}
+            </select>
+          </div>
+          <div className="workout-form-weight-input">
+            <input
+              type="text"
+              placeholder="20"
+              className="text-input form-control"
+              value={currSet.weight}
+              onChange={(e) => {
+                setCurrSet({
+                  ...currSet,
+                  weight: parseInt(e.target.value),
+                });
+              }}
+            />
+          </div>
+          <div className="workout-form-reps-input">
+            <input
+              type="text"
+              className="text-input form-control"
+              placeholder="8"
+              value={currSet.reps}
+              onChange={(e) => {
+                setCurrSet({
+                  ...currSet,
+                  reps: parseInt(e.target.value),
+                });
+              }}
+            />
           </div>
         </div>
         <div className="workout-form-add-set">
@@ -248,7 +264,7 @@ function WorkoutForm(props: WorkoutFormProps): JSX.Element {
               setSetsArray((prevVals) => [...prevVals, currSet]);
             }}
           >
-            New set
+            Add set
           </button>
         </div>
         <div>

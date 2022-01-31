@@ -2,9 +2,16 @@ import { Nav, Navbar } from "react-bootstrap";
 
 export function NavigationBar(): JSX.Element {
   return (
-    <Navbar bg="light" variant="light" expand="lg" sticky="top">
+    <Navbar
+      style={{ padding: "10 10" }}
+      bg="light"
+      variant="light"
+      expand="lg"
+      sticky="top"
+    >
       {/*  */}
       <Navbar.Brand href="/">Workout Tracker</Navbar.Brand>
+
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />
       <Navbar.Collapse id="responsive-navbar-nav">
         <Nav className="me-auto">
