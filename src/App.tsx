@@ -2,13 +2,15 @@ import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
 // import { MuscleType } from "./types/MuscleType";
 // import { ExerciseImageType } from "./types/ExerciseImageType";
+import "./App.css";
+
 import { ExerciseType } from "./types/ExerciseType";
 // import { getMuscleName } from "./utils/getMuscleName";
 import "bootstrap/dist/css/bootstrap.min.css";
 // import { getExerciseImage } from "./utils/getExerciseImage";
-import { NavigationBar } from "./components/NavigationBar";
+import { NavigationBar } from "./components/NavigationBar/NavigationBar";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
-import { StatsPage } from "./components/StatsPage";
+import { StatsPage } from "./components/StatsPage/StatsPage";
 import { HomePage } from "./components/HomePage/HomePage";
 import { LogWorkout } from "./components/LogWorkout/LogWorkout";
 import { WorkoutType } from "./types/WorkoutType";

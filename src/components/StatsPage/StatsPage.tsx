@@ -3,9 +3,11 @@ import { useCallback, useEffect, useState } from "react";
 import {
   fillWorkoutsPerWeek,
   QueryDataType,
-} from "../utils/fillWorkoutsPerWeek";
+} from "../../utils/fillWorkoutsPerWeek";
 import { config } from "dotenv";
 import moment from "moment";
+import "./StatsPage.css";
+
 import { Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -18,7 +20,7 @@ import {
   Legend,
   BarElement,
 } from "chart.js";
-import { weekToDate } from "../utils/weekToDate";
+import { weekToDate } from "../../utils/weekToDate";
 
 ChartJS.register(
   CategoryScale,
@@ -99,7 +101,13 @@ function WorkoutsPerWeek(): JSX.Element {
       <Bar
         data={{
           labels: weeksData,
-          datasets: [{ data: countsData }],
+          datasets: [
+            {
+              label: "Workouts",
+              data: countsData,
+              backgroundColor: "rgba(53, 162, 235, 0.5)",
+            },
+          ],
         }}
         height={400}
         width={600}
