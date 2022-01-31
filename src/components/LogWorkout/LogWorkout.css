@@ -6,6 +6,10 @@
   padding: 20px;
 }
 
+.log-workout-title {
+  margin-bottom: 20px;
+}
+
 .text-input {
   background-color: transparent;
   border: 0px;
@@ -13,13 +17,29 @@
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   box-shadow: none;
-  color: transparent;
   border-bottom: grey 1px solid;
   border-radius: 0px;
 }
 
+.description-input {
+  margin: 10px 0px;
+}
+
 .text-input:focus {
   background-color: transparent;
+}
+
+.workout-form-description-inputs {
+  background-color: white;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.workout-form-date-picker-element {
+  border-radius: 5px;
+  padding: 5px;
+  border: none;
+  cursor: pointer;
 }
 
 .workout-form-day-label,
@@ -28,9 +48,20 @@
   margin-bottom: 10px;
 }
 
+.workout-form-sets-section {
+  background-color: white;
+  border-radius: 10px;
+  margin: 20px auto;
+  padding: 20px 20px 10px;
+}
+
 .workout-form-exercise-headers,
 .workout-form-prev-sets-card {
   display: flex;
+}
+
+.workout-form-prev-sets {
+  color: grey;
 }
 
 .workout-form-exercise-headers-name,
@@ -47,20 +78,19 @@
   display: flex;
 }
 
-.workout-form-name-input {
-  width: 60%;
-}
-
 .workout-form-add-set {
   display: flex;
   width: 10vw;
   margin: 20px auto;
   font-size: 1.1rem;
+  cursor: pointer;
+  color: #00897b;
 }
 
 .workout-form-add-set-icon {
-  margin-bottom: 5px;
-  margin-right: 5px;
+  margin-right: 3px;
+  position: relative;
+  bottom: 2px;
 }
 
 .workout-form-add-set-button {
@@ -74,6 +104,13 @@ button {
   color: #00897b;
 }
 
-button:hover {
+button:hover,
+.workout-form-add-set:hover {
   color: #4db6ac;
+}
+
+.workout-form-finish {
+  margin-left: 70%;
+  padding: 20px;
+  font-size: large;
 }

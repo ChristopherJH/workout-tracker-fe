@@ -131,19 +131,30 @@ function WorkoutCard(props: WorkoutCardProps): JSX.Element {
       id={`workout-card-${props.workout.workout_id}`}
     >
       <div className="workout-card-row1">
-        <h2 className="workout-card-title">{props.workout.title}</h2>
-        <h3 className="workout-card-weight-lifted">
-          <FaWeightHanging />
-          {props.workout.weight_lifted}
-        </h3>
-        <h3 className="workout-card-duration">
-          <FaClock />
-          {props.workout.duration_mins}
-        </h3>
-        <h3 className="workout-card-exercises">
-          <GiWeightLiftingUp />
-          {props.workout.exercises}
-        </h3>
+        <div className="workout-card-title">
+          <h2>{props.workout.title}</h2>
+        </div>
+        <div className="workout-card-weight-lifted">
+          <h3 className="workout-card-weight-lifted-icon">
+            {" "}
+            <FaWeightHanging />
+          </h3>
+          <h3>{props.workout.weight_lifted}</h3>
+        </div>
+        <div className="workout-card-duration">
+          <h3 className="workout-card-duration-icon">
+            {" "}
+            <FaClock />
+          </h3>
+          <h3>{props.workout.duration_mins}</h3>
+        </div>
+        <div className="workout-card-exercises">
+          <h3 className="workout-card-exercises-icon">
+            {" "}
+            <GiWeightLiftingUp />
+          </h3>
+          <h3>{props.workout.exercises}</h3>
+        </div>
       </div>
       <div className="workout-card-row2">
         <h3 className="workout-card-day">{props.workout.day}</h3>
