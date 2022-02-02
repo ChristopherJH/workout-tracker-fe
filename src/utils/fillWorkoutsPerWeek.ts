@@ -8,7 +8,6 @@ export function fillWorkoutsPerWeek(
   queryData: QueryDataType[]
 ): number[] {
   const countsArray = new Array(datesArray.length).fill(0);
-  console.log(countsArray);
   queryData.forEach((data) => {
     const datePresent = datesArray.includes(data["date"]);
     if (datePresent) {

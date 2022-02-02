@@ -10,7 +10,7 @@
 }
 
 .general-stats div {
-  background-color: #80deea;
+  background-color: #80cbc4;
   color: white;
   padding: 1rem;
   margin: 0 0.5rem;
@@ -48,7 +48,7 @@
 }
 
 .workout-card {
-  background-color: #e0f7fa;
+  background-color: #e0f2f1;
   padding: 1rem;
   margin: 1rem 0.5rem;
   box-shadow: 2px 2px 2px #888888;
@@ -76,6 +76,14 @@
   color: #888888;
 }
 
+.workout-card-highlights,
+.workout-card-all-sets {
+  background-color: white;
+  border-radius: 10px;
+  padding: 10px;
+  margin-top: 10px;
+}
+
 .workout-card-weight-lifted h3,
 .workout-card-duration h3,
 .workout-card-exercises h3 {
@@ -101,7 +109,7 @@
 
 .workout-card-best-sets-title,
 .workout-card-all-sets-title {
-  font-size: 2.2rem;
+  font-size: 2rem;
 }
 
 .workout-card-best-set,
