@@ -4,7 +4,7 @@ import "./HomePage.css";
 import { config } from "dotenv";
 import { FaWeightHanging, FaClock } from "react-icons/fa";
 
-import { CgArrowsExpandRight } from "react-icons/cg";
+import { CgArrowsExpandRight, CgMinimizeAlt } from "react-icons/cg";
 import { GiWeightLiftingUp } from "react-icons/gi";
 import { WorkoutType } from "../../types/WorkoutType";
 import { SetType } from "../../types/SetType";
@@ -162,7 +162,6 @@ function WorkoutCard(props: WorkoutCardProps): JSX.Element {
           {moment(props.workout.date).calendar()}
         </h4>
       </div>
-      <hr />
       <div className={`workout-card-body-${props.workout.workout_id}`}>
         <div
           className={`workout-card-highlights collapse show multi-collapse-${props.workout.workout_id}`}
@@ -225,7 +224,14 @@ function WorkoutCard(props: WorkoutCardProps): JSX.Element {
           aria-expanded="false"
           aria-controls={`highlights-${props.workout.workout_id} all-sets-${props.workout.workout_id}`}
         >
-          <CgArrowsExpandRight />
+          <CgMinimizeAlt
+            className={`collapse multi-collapse-${props.workout.workout_id}`}
+            id={`all-sets-${props.workout.workout_id}`}
+          />
+          <CgArrowsExpandRight
+            className={`collapse show multi-collapse-${props.workout.workout_id}`}
+            id={`highlights-${props.workout.workout_id}`}
+          />
         </button>
       </div>
     </div>
