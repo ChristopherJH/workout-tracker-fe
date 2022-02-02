@@ -9,6 +9,8 @@ import "react-datepicker/dist/react-datepicker.css";
 import axios from "axios";
 import { config } from "dotenv";
 import { WorkoutType } from "../../types/WorkoutType";
+import { toast } from "react-toastify";
+import { isValidForm } from "../../utils/isValidForm";
 
 config();
 
@@ -38,7 +40,7 @@ interface WorkoutFormProps {
   setWorkoutsList: (input: WorkoutType[]) => void;
 }
 
-interface FormContentType {
+export interface FormContentType {
   title: string;
   day: string;
   notes: string;
@@ -46,7 +48,7 @@ interface FormContentType {
   date: Date;
 }
 
-interface SetContentType {
+export interface SetContentType {
   workout_id: number;
   name: string;
   weight: number | undefined;
@@ -79,24 +81,53 @@ function WorkoutForm(props: WorkoutFormProps): JSX.Element {
     workoutData: FormContentType,
     setsData: SetContentType[]
   ) {
-    try {
-      const workoutRes = await axios.post(`${baseURL}/workout`, workoutData);
-      console.log({ workoutRes });
-      const updateWorkoutsRes = await axios.get(`${baseURL}/workouts`);
-      const workoutResults = updateWorkoutsRes.data.data;
-      props.setWorkoutsList(workoutResults);
-      const setsRes = await axios.post(
-        `${baseURL}/${workoutRes.data.data.workout_id}/sets`,
-        { data: setsData }
-      );
-      navigate("/");
-      setFormContent(defaultFormContent);
-
-      setSetsArray([]);
-      console.log(setsRes);
-    } catch (err) {
-      console.log(err);
+    if (isValidForm(workoutData, setsData)) {
+      try {
+        // Post workout
+        const workoutRes = await axios.post(`${baseURL}/workout`, workoutData);
+        // Update workouts locally
+        const updateWorkoutsRes = await axios.get(`${baseURL}/workouts`);
+        const workoutResults = updateWorkoutsRes.data.data;
+        props.setWorkoutsList(workoutResults);
+        // Post sets using new workout_id
+        await axios.post(`${baseURL}/${workoutRes.data.data.workout_id}/sets`, {
+          data: setsData,
+        });
+        // Redirect
+        navigate("/");
+        // Display toast
+        toast.success("Completed Workout");
+        // Reset forms
+        setFormContent(defaultFormContent);
+        setSetsArray([]);
+      } catch (err) {
+        console.log(err);
+        toast.error("Workout could not be posted");
+      }
+    } else {
+      toast.warn("Further details required");
     }
+  }
+
+  function handleAddSet(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+    e.preventDefault();
+    if (currSet.name !== "" && currSet.weight && currSet.reps) {
+      setSetsArray((prevVals) => [...prevVals, currSet]);
+    } else {
+      toast.warn("Set information required");
+    }
+  }
+
+  function handleDeleteSet() {
+    const lastIndex = setsArray.length - 1;
+    setCurrSet({
+      ...currSet,
+      reps: setsArray[lastIndex].reps,
+      weight: setsArray[lastIndex].weight,
+      name: setsArray[lastIndex].name,
+    });
+    setsArray.splice(lastIndex, 1);
+    setSetsArray(setsArray);
   }
 
   return (
@@ -215,6 +246,7 @@ function WorkoutForm(props: WorkoutFormProps): JSX.Element {
               {/* Dropdown for exercises from api */}
               <select
                 className="form-control"
+                placeholder="Select an exercise"
                 value={currSet.name}
                 onChange={(e) => {
                   setCurrSet({
@@ -233,7 +265,6 @@ function WorkoutForm(props: WorkoutFormProps): JSX.Element {
             <div className="col-3 workout-form-weight-input">
               <input
                 type="text"
-                placeholder="20"
                 className="text-input form-control"
                 value={currSet.weight}
                 onChange={(e) => {
@@ -244,11 +275,10 @@ function WorkoutForm(props: WorkoutFormProps): JSX.Element {
                 }}
               />
             </div>
-            <div className="col-3 workout-form-reps-input">
+            <div className="col-2 workout-form-reps-input">
               <input
                 type="text"
                 className="text-input form-control"
-                placeholder="8"
                 value={currSet.reps}
                 onChange={(e) => {
                   setCurrSet({
@@ -258,13 +288,16 @@ function WorkoutForm(props: WorkoutFormProps): JSX.Element {
                 }}
               />
             </div>
+            <div
+              className="col-1 workout-form-reps-delete"
+              onClick={() => handleDeleteSet()}
+            >
+              Delete
+            </div>
           </div>
           <div
             className="workout-form-add-set"
-            onClick={(e) => {
-              e.preventDefault();
-              setSetsArray((prevVals) => [...prevVals, currSet]);
-            }}
+            onClick={(e) => handleAddSet(e)}
           >
             <div className="workout-form-add-set-icon">
               <MdAddCircleOutline />

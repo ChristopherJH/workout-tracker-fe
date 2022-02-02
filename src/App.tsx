@@ -14,6 +14,9 @@ import { StatsPage } from "./components/StatsPage/StatsPage";
 import { HomePage } from "./components/HomePage/HomePage";
 import { LogWorkout } from "./components/LogWorkout/LogWorkout";
 import { WorkoutType } from "./types/WorkoutType";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 // import { config } from "dotenv";
 
 // config();
@@ -106,7 +109,17 @@ function App(): JSX.Element {
           <Route path="/stats" element={<StatsPage />} />
         </Routes>
       </Router>
-
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       {/* {exerciseList.map((exercise, index) => {
         const exerciseImage = getExerciseImage(imageList, exercise);
         return (
