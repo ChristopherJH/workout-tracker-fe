@@ -10,7 +10,6 @@ import { getWeeksData } from "../../utils/getWeeksData";
 import {
   ResponsiveContainer,
   BarChart,
-  CartesianGrid,
   XAxis,
   YAxis,
   Bar,
